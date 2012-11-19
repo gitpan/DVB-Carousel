@@ -1,0 +1,7 @@
+Revision history for DVB-Carousel
+
+0.13    20120911 12:47 CET
+        First public release of software
+
+0.14    20120912 14:32 CET
+        Added additional trigger for cleaning up the journal table.
