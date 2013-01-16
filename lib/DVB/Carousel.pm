@@ -6,7 +6,7 @@ DVB::Carousel - Handling of simple DVB carousel database used by ringelspiel.
 
 =head1 SYNOPSIS
 
-Add, delete and list MPEG-2 transport streams in a caroussel playout system.
+Add, delete and list MPEG-2 transport streams in a carousel playout system.
 
     use DVB::Carousel;
 
@@ -38,7 +38,7 @@ use Carp;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = "0.20";
+our $VERSION = "0.21";
 our @ISA     = qw(Exporter);
 our @EXPORT  = qw();
 

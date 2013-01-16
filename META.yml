@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               DVB-Carousel
-version:            0.20
+version:            0.21
 abstract:           Handling of simple DVB carousel database used by ringelspiel.
 author:
     - Bojan Ramšak <BojanR@gmx.net>
