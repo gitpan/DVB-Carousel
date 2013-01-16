@@ -5,3 +5,12 @@ Revision history for DVB-Carousel
 
 0.14    20120912 14:32 CET
         Added additional trigger for cleaning up the journal table.
+
+0.15    20121226 13:33 CET
+        Added PRAGMA to database open
+
+0.16    20121230 18:29 CET
+        Optimization of carousel by changed indexing.
+
+0.20    20130104 22:41:57 CET
+        Added getMTS method

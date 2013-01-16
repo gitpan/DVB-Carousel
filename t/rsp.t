@@ -1,5 +1,5 @@
 #!perl
-use Test::More tests => 9;
+use Test::More tests => 10;
 use lib "../lib";
 
 my $sampleFile = "carousel.db";
@@ -29,6 +29,8 @@ close( FILE);
 ok( $mycarousel->addFile( 12, "sdt.psi", 100), "insert file data to carousel");
 
 ok( scalar @{$mycarousel->listMts()} == 2, "list carousel content");
+
+ok( length( ${$mycarousel->getMts( 18)}) == 188, "get data from carousel");
 
 ok( $mycarousel->deleteMts( 18), "delete carousel data by pid");
 

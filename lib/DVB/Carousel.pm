@@ -38,7 +38,7 @@ use Carp;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = "0.14";
+our $VERSION = "0.20";
 our @ISA     = qw(Exporter);
 our @EXPORT  = qw();
 
@@ -58,8 +58,11 @@ sub new {
     $self->{dbh}      = DBI->connect( "dbi:SQLite:" . $self->{filename} )
         or return -1;
 
-    $self->{dbh}->do( "PRAGMA synchronous = OFF; PRAGMA temp_store = MEMORY; PRAGMA auto_vacuum = NONE; PRAGMA cache_size = 4000000; "
-    );
+    $self->{dbh}->do( " PRAGMA synchronous = OFF; 
+                        PRAGMA temp_store = MEMORY; 
+                        PRAGMA auto_vacuum = NONE; 
+                        PRAGMA journal_mode = OFF;
+                        PRAGMA cache_size = 4000000;");
 
     bless( $self, $class );
     return $self;
@@ -88,7 +91,7 @@ sub initdb {
         interval INTEGER,
         mts BLOB, 
         timestamp DATE,
-        PRIMARY KEY( pid, timestamp))"
+        PRIMARY KEY( pid))"
     );
     
     $dbh->do(
@@ -245,6 +248,32 @@ sub listMts {
             . ( " ORDER BY pid")); 
 }
 
+=item getMts( $pid)
+
+Return MPEG-2 transport stream data in carousel for $pid.
+
+Return reference to data string or undef if not found.
+
+=cut
+
+sub getMts {
+    my $self = shift;
+    my $pid  = shift;
+    my $dbh  = $self->{dbh};
+
+    my $sel = $dbh->prepare( "SELECT mts FROM carousel WHERE pid=$pid");
+    $sel->execute();
+
+    my ( $mts );
+    $sel->bind_columns( \( $mts) );
+
+    if( $sel->fetch()) {
+        return \$mts 
+    }
+    else {
+        return;        
+    }
+}
 =head1 AUTHOR
 
 Bojan Ramsak, C<< <BojanR@gmx.net> >>
