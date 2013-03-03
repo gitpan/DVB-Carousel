@@ -6,7 +6,7 @@ DVB::Carousel - Handling of simple DVB carousel database used by ringelspiel.
 
 =head1 SYNOPSIS
 
-Add, delete and list MPEG-2 transport streams in a carousel playout system.
+Add, delete and list MPEG-2 transport streams chunks in a carousel playout system.
 
     use DVB::Carousel;
 
@@ -38,7 +38,7 @@ use Carp;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT);
 
-our $VERSION = "0.21";
+our $VERSION = "0.22";
 our @ISA     = qw(Exporter);
 our @EXPORT  = qw();
 
@@ -230,11 +230,11 @@ sub deleteMts {
 
 =item listMts( $pid)
 
-List MPEG-2 transport streams in carousel.
+List information on MPEG-2 transport stream data in carousel.
 $pid is an optional parameter used as selection filter.
 
 Return reference to an array of arrays of MTS consisting of pid, 
-repetition interval, timestamp of last update.
+repetition interval and timestamp of last update.
 
 =cut
 
@@ -250,9 +250,9 @@ sub listMts {
 
 =item getMts( $pid)
 
-Return MPEG-2 transport stream data in carousel for $pid.
-
-Return reference to data string or undef if not found.
+Return reference to array of MPEG-2 transport stream data in carouselfor $pid.
+The elements of array are pid, repetition interval, MTS binary data and 
+timestamp of last update.
 
 =cut
 
@@ -261,18 +261,9 @@ sub getMts {
     my $pid  = shift;
     my $dbh  = $self->{dbh};
 
-    my $sel = $dbh->prepare( "SELECT mts FROM carousel WHERE pid=$pid");
-    $sel->execute();
+    my $sel = $dbh->selectrow_arrayref( "SELECT pid, interval, mts, strftime('%s',timestamp) FROM carousel WHERE pid=$pid");
 
-    my ( $mts );
-    $sel->bind_columns( \( $mts) );
-
-    if( $sel->fetch()) {
-        return \$mts 
-    }
-    else {
-        return;        
-    }
+    return $sel; 
 }
 =head1 AUTHOR
 

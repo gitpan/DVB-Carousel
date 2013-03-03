@@ -30,7 +30,8 @@ ok( $mycarousel->addFile( 12, "sdt.psi", 100), "insert file data to carousel");
 
 ok( scalar @{$mycarousel->listMts()} == 2, "list carousel content");
 
-ok( length( ${$mycarousel->getMts( 18)}) == 188, "get data from carousel");
+my $meta = $mycarousel->getMts( 18);
+ok( $$meta[0] == 18 && $$meta[1] == 10000 && $$meta[2] eq $dummyPes, "get data from carousel");
 
 ok( $mycarousel->deleteMts( 18), "delete carousel data by pid");
 
